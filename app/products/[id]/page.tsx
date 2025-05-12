@@ -1,9 +1,11 @@
 import NotFound from "@/app/not-found";
-import { products } from "@/app/product-data"
 import Link from "next/link";
 
-export default function ProductDetails({ params }: { params: { id: string } }) {
-    const product = products.find(p => p.id === params.id);
+export const dynamic = 'force-dynamic';
+
+export default async function ProductDetails({ params }: { params: { id: string } }) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/products/${params.id}`);
+    const product = await response.json();
     if (!product) {
         return <NotFound />
     }
